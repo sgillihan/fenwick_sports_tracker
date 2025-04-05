@@ -90,7 +90,18 @@ set<Edge*> Graph::getAdjacentEdges(Node* n) {
 }
 
 void Graph::clear() {
-  // TODO
+  // clear nodes
+  for (const auto& n : getNodes()) {
+    n->clear();
+  }
+  //clear edges
+  for (const auto& e : getEdges()) {
+    e->setType(UNDISCOVERED_EDGE);
+  }
+  //clear lists
+  search_edges.clear();
+  search_nodes.clear();
+  clock=0;
 }
 
 void Graph::tick(string message) {
