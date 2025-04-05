@@ -26,25 +26,48 @@ void Node::setRank(int r) {
 }
 
 void Node::clear() {
-  // TODO
+  color = WHITE;
+  discovery_time=-1;
+  completion_time=-1;
+  rank=-1;
+  predecessor=nullptr;
 }
 
 void Node::setColor(int search_color, int time) {
-  // TODO
+  if (search_color==GRAY){
+    color=GRAY;
+    discovery_time=time;
+  }
+  else if (search_color==BLACK){
+    color=BLACK;
+    completion_time=time;
+  }
+  else if (search_color==WHITE){
+    clear();
+  }
 }
 
 void Node::getDiscoveryInformation(int& thecolor, int& disco_time,
                                    int& finish_time, int& bfs_rank) {
-  // TODO
+                                    thecolor = color;
+                                    disco_time=discovery_time;
+                                    finish_time=completion_time;
+                                    bfs_rank=rank;
 }
 
 bool Node::isAncestor(Node* other) {
-  // TODO
+  Node* curr_node=this;
+  while (curr_node != nullptr){
+    if (curr_node==other){
+      return true;
+    }
+    curr_node = curr_node->predecessor;
+  }
   return false;
 }
 
 void Node::setPredecessor(Node* other) {
-  // TODO
+  predecessor=other;
 }
 
 // overloading operator << lets you put a Node object into an output

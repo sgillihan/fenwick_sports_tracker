@@ -106,11 +106,50 @@ void Graph::tick(string message) {
 }
 
 void Graph::dfs(Node* start) {
-  // TODO
+  // clear graph before initial call
+  if (clock==0){
+    clear();
+  }
+  
+  start->setColor(GRAY,++clock);
+  search_nodes.push_back(start);
+  
+  //visit node
+  set<Edge*> curr_edges = getAdjacentEdges(start);
+  for (const auto& e : curr_edges) {
+    Node* neighbor=nullptr;
+    if (e->getStart()==start){
+      neighbor = e->getEnd();
+    }
+    else{
+      neighbor = e->getStart();
+    }
+    int color,disc,comp,rank;
+    neighbor->getDiscoveryInformation(color,disc,comp,rank);
+
+    if (color==WHITE){
+      e->setType(TREE_EDGE);
+      neighbor->setPredecessor(start);
+      dfs(neighbor);
+    }
+    else if (color==GRAY) {
+      e->setType(BACK_EDGE);
+    }
+    else if (color==BLACK){
+      if (start->isAncestor(neighbor)){
+        e->setType(FORWARD_EDGE);
+      }
+      else{
+        e->setType(CROSS_EDGE);
+      }
+    }
+    search_edges.push_back(e);
+  }
+start->setColor(BLACK,++clock);
 }
 
 void Graph::bfs(Node* start) {
-  // TODO
+
 }
 
 void Graph::bfs(Node* start, Node* finish) {
