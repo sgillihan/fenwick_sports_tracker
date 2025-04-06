@@ -163,7 +163,7 @@ void Graph::dfs(Node* start) {
 
     // the neighbor is discovered and completely processed. If start is ancestor of neighbor, forward edge. Else, cross edge
     else if (color==BLACK){
-      if (start->isAncestor(neighbor)){
+      if (neighbor->isAncestor(start)){
         e->setType(FORWARD_EDGE);
       }
       else{
