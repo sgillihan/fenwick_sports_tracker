@@ -118,34 +118,50 @@ void Graph::tick(string message) {
 
 void Graph::dfs(Node* start) {
   // clear graph before initial call
-  if (clock==0){
+  if (clock==0 && search_nodes.empty()){
     clear();
   }
   
-  start->setColor(GRAY,++clock);
+  // visit the node
+  start->setColor(GRAY,clock);
+  clock++;
   search_nodes.push_back(start);
   
-  //visit node
+  // get all adjacent edges
   set<Edge*> curr_edges = getAdjacentEdges(start);
+
+  // for each edge in adjacent edges
   for (const auto& e : curr_edges) {
     Node* neighbor=nullptr;
-    if (e->getStart()==start){
-      neighbor = e->getEnd();
+    if (!isDirected() || e->getStart()==start){
+      //Node* neighbor=nullptr;
+      if (e->getStart()==start){
+        neighbor = e->getEnd();
+      }
+      else{
+        neighbor = e->getStart();
+      }
     }
-    else{
-      neighbor = e->getStart();
+    else {
+      continue;
     }
+  
     int color,disc,comp,rank;
     neighbor->getDiscoveryInformation(color,disc,comp,rank);
 
+    // the neighbor is undiscovered. Neighbor was discovered via start. This is a tree edge
     if (color==WHITE){
       e->setType(TREE_EDGE);
       neighbor->setPredecessor(start);
       dfs(neighbor);
     }
+
+    // the neighbor is discovered but not completely processed. This is a back edge
     else if (color==GRAY) {
       e->setType(BACK_EDGE);
     }
+
+    // the neighbor is discovered and completely processed. If start is ancestor of neighbor, forward edge. Else, cross edge
     else if (color==BLACK){
       if (start->isAncestor(neighbor)){
         e->setType(FORWARD_EDGE);
@@ -156,7 +172,8 @@ void Graph::dfs(Node* start) {
     }
     search_edges.push_back(e);
   }
-start->setColor(BLACK,++clock);
+start->setColor(BLACK,clock);
+clock++;
 }
 
 void Graph::bfs(Node* start) {
