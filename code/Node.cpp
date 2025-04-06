@@ -25,6 +25,10 @@ void Node::setRank(int r) {
   rank = r;
 }
 
+int Node::getRank(){
+  return rank;
+}
+
 void Node::clear() {
   color = WHITE;
   discovery_time=-1;

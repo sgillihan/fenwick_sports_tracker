@@ -28,6 +28,7 @@ public:
   string getData();
   void setData(string s);
   void setRank(int rank);
+  int getRank();
 
   // Have you ever wondered when you say `cout << "hello world!" << endl;` what
   // `<<` means? How is it implemented? These are operator methods that you can

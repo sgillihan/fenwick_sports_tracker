@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <queue>
 
 using namespace std;
 
@@ -181,7 +182,61 @@ void Graph::bfs(Node* start) {
 }
 
 void Graph::bfs(Node* start, Node* finish) {
-  // TODO
+  // clear graph before initial call
+  if (clock==0 && search_nodes.empty()){
+    clear();
+  }
+  // initialize queue
+  queue<Node*> bfsq;
+  bfsq.push(start);
+
+  // visit start
+  start->setColor(GRAY,clock);
+  clock++;
+  start->setRank(0);
+  search_nodes.push_back(start);
+
+  while (!bfsq.empty()){
+    Node* curr_node = bfsq.front();
+    bfsq.pop();
+
+    if (curr_node==finish){
+      break;
+    }
+
+    set<Edge*> curr_edges = getAdjacentEdges(curr_node);
+
+    // for each edge in adjacent edges
+    for (const auto& e : curr_edges) {
+      Node* neighbor=nullptr;
+      if (isDirected() && e->getStart()!=curr_node){
+        continue;
+      }
+
+      if (e->getStart()==curr_node){
+        neighbor = e->getEnd();
+        }
+      else{
+        neighbor = e->getStart();
+      }
+
+      int color,disc,comp,rank;
+      neighbor->getDiscoveryInformation(color,disc,comp,rank);
+
+      if (color==WHITE){
+        neighbor->setColor(GRAY,clock);
+        ++clock;
+        neighbor->setRank(curr_node->getRank() +1);
+        neighbor->setPredecessor(curr_node);
+        bfsq.push(neighbor);
+        search_nodes.push_back(neighbor);
+        search_edges.push_back(e);
+      }
+    }
+
+    curr_node->setColor(BLACK,clock);
+    ++clock;
+  }
 }
 
 // overloading operator << lets you put a Graph object into an output
