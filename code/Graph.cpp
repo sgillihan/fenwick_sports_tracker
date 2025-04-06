@@ -178,7 +178,7 @@ clock++;
 }
 
 void Graph::bfs(Node* start) {
-
+  bfs(start,nullptr);
 }
 
 void Graph::bfs(Node* start, Node* finish) {
@@ -200,7 +200,7 @@ void Graph::bfs(Node* start, Node* finish) {
     Node* curr_node = bfsq.front();
     bfsq.pop();
 
-    if (curr_node==finish){
+    if (finish && curr_node==finish){
       break;
     }
 
