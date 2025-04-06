@@ -112,7 +112,7 @@ void Graph::tick(string message) {
   // unused var warning. Change this however you want.
   //
   // recommended use: call it just after incrementing the clock.
-  if (false) {
+  if (true) {
     cout << "// " << message << endl << make_dot(this) << endl;
   }
 }
@@ -125,6 +125,7 @@ void Graph::dfs(Node* start) {
   
   // visit the node
   start->setColor(GRAY,clock);
+  //tick("Discovered "+start->getData());
   clock++;
   search_nodes.push_back(start);
   
@@ -174,6 +175,7 @@ void Graph::dfs(Node* start) {
     search_edges.push_back(e);
   }
 start->setColor(BLACK,clock);
+//tick("Finished "+start->getData());
 clock++;
 }
 
@@ -225,6 +227,7 @@ void Graph::bfs(Node* start, Node* finish) {
 
       if (color==WHITE){
         neighbor->setColor(GRAY,clock);
+        //tick("Discovered "+ neighbor->getData());
         ++clock;
         neighbor->setRank(curr_node->getRank() +1);
         neighbor->setPredecessor(curr_node);
@@ -235,6 +238,7 @@ void Graph::bfs(Node* start, Node* finish) {
     }
 
     curr_node->setColor(BLACK,clock);
+    //tick("Finished "+curr_node->getData());
     ++clock;
   }
 }

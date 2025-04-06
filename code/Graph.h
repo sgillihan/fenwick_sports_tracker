@@ -81,4 +81,6 @@ private:
   int clock;
 };
 
+std::string make_dot(Graph* g);
+
 #endif // GRAPH_H__
