@@ -1,18 +1,30 @@
 #include <iostream>
-#include "../code/Graph.h"
-#include "../code/Node.h"
-#include "../code/Edge.h"
+#include <map>
+#include "../code/Activity.h"
+#include "../code/AthleteTracker.h"
+#include "../code/FenwickTree.h"
+#include "../code/CSVProc.h"
 
 using namespace std;
 
-int main(){
+int main() {
+    map<string, AthleteTracker*> athletes;
 
-    // Do some printing
-    int var;
-    cout << "Hello World, please enter a number " << endl;
-    cin >> var;
-    cout << "your number was : " << var << endl;
+    string filename = "Test_Data_1.csv";
+    CSVProc::importCSV(filename, athletes, 100);  // capacity = 100 entries per athlete
 
+    for (const auto& [name, tracker] : athletes) {
+        cout << "Athlete: " << name << endl;
+        cout << "  Total Distance: " << tracker->totalDistance() << " miles" << endl;
+        cout << "  Total Time: " << tracker->totalTime() << " minutes" << endl;
+        cout << "  Average Pace: " << tracker->averagePace() << " min/mile" << endl;
+        cout << endl;
+    }
+
+    // Cleanup: deallocate all trackers
+    for (auto& [name, tracker] : athletes) {
+        delete tracker;
+    }
 
     return 0;
 }
