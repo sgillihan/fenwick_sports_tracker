@@ -26,26 +26,32 @@ int main() {
         cin>>choice;
 
         if (choice==1) {
-            for (const auto& [name, tracker] : athletes) {
-                cout << "Athlete: " << name << endl;
-                cout << "  Total Distance: " << tracker->totalDistance() << " miles" << endl;
-                cout << "  Total Time: " << tracker->totalTime() << " minutes" << endl;
-                cout << "  Average Pace: " << tracker->averagePace() << " min/mile" << endl;
-                cout << "Oldest activity date: " << tracker->formatDate(tracker->getOldestDate()) << endl;
-                cout << "Newest activity date: " << tracker->formatDate(tracker->getNewestDate()) << endl;
-                cout << endl<<endl;
+            if (athletes.empty()){
+                cout<<"No data available"<<endl<<endl;
+            }
+            else {
+                for (const auto& [name, tracker] : athletes) {
+                    cout << "Athlete: " << name << endl;
+                    cout << "  Total Distance: " << tracker->totalDistance() << " miles" << endl;
+                    cout << "  Total Time: " << tracker->totalTime() << " minutes" << endl;
+                    cout << "  Average Pace: " << tracker->averagePace() << " min/mile" << endl;
+                    cout << "Oldest activity date: " << tracker->formatDate(tracker->getOldestDate()) << endl;
+                    cout << "Newest activity date: " << tracker->formatDate(tracker->getNewestDate()) << endl;
+                    cout << endl<<endl;
+                }
             }
         }
 
         else if (choice==2){
             string yesno="";
-            cout<<"please ensure your csv file is in the same directory as main.cpp." <<endl<<"Is your file in the main.cpp directory (Y/N)?"<<endl;
+            cout<<"please ensure your csv file is in the csv_files folder." <<endl<<"Is your file in csv_files folder? (Y/N)?"<<endl;
             cin>>yesno;
             if (yesno=="Y" || yesno=="y"){
                 string filename="";
                 cout<<"Please enter the file name, including .csv extension: "<<endl;
                 cin>>filename;
-                CSVProc::importCSV(filename, athletes, 100);  // capacity = 100 entries per athlete
+                string fullpath="csv_files/"+filename;
+                CSVProc::importCSV(fullpath, athletes, 100);  // capacity = 100 entries per athlete
                 cout<<"Successfully imported csv"<<endl<<endl;
             }
             else {
