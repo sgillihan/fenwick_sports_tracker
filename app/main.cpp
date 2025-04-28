@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <map>
 #include "../code/Activity.h"
 #include "../code/AthleteTracker.h"
@@ -20,6 +21,7 @@ int main() {
         cout<<"3. Remove an activity"<<endl;
         cout<<"4. Add an activity"<<endl;
         cout<<"5. Edit an activity"<<endl;
+        cout<<"6. Print current Fenwick Trees"<<endl;
         cout<<"0. Exit program"<<endl<<endl;
         cout<<"Your choice: ";
 
@@ -46,13 +48,24 @@ int main() {
             string yesno="";
             cout<<"please ensure your csv file is in the csv_files folder." <<endl<<"Is your file in csv_files folder? (Y/N)?"<<endl;
             cin>>yesno;
+
             if (yesno=="Y" || yesno=="y"){
                 string filename="";
                 cout<<"Please enter the file name, including .csv extension: "<<endl;
                 cin>>filename;
                 string fullpath="csv_files/"+filename;
-                CSVProc::importCSV(fullpath, athletes, 100);  // capacity = 100 entries per athlete
-                cout<<"Successfully imported csv"<<endl<<endl;
+                
+                //check if file exists in folder
+                ifstream testfile(fullpath);
+                if (!testfile.is_open()){
+                    cout<<"Error. File name not found in csv_file folder."<<endl<<endl;
+                }
+                else {
+                    testfile.close();
+                
+                    CSVProc::importCSV(fullpath, athletes, 100);  // capacity = 100 entries per athlete
+                    cout<<"Successfully imported csv"<<endl<<endl;
+                }
             }
             else {
                 cout<<"Exiting procedure. Please paste csv in correct folder and re-run program."<<endl<<endl;
@@ -240,6 +253,19 @@ int main() {
                 }
                 else {
                     cout << "No activity found on that date." << endl << endl;
+                }
+            }
+        }
+
+        else if (choice == 6) {
+            if (athletes.empty()) {
+                cout << "No athlete data available yet." << endl << endl;
+            }
+            else {
+                for (const auto& [name, tracker] : athletes) {
+                    cout << "Athlete: " << name << endl;
+                    tracker->printFenwickTrees();
+                    cout << endl;
                 }
             }
         }
