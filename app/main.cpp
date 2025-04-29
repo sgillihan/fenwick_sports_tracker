@@ -23,6 +23,7 @@ int main() {
         cout<<"4. Add an activity"<<endl;
         cout<<"5. Edit an activity"<<endl;
         cout<<"6. Print current Fenwick Trees"<<endl;
+        cout<<"7. View current athlete data summary for a specific date range"<<endl;
         cout<<"0. Exit program"<<endl<<endl;
         cout<<"Your choice: ";
 
@@ -47,10 +48,14 @@ int main() {
         } 
         else if (choice == 6) {
             printFenwickTreesMenu(athletes);
+        }
+        else if (choice ==7) {
+            viewSummaryByRange(athletes);
         } 
         else if (choice != 0) {
             cout << "Invalid option." << endl<<endl;
         }
+        
     }
 
     // Deallocate trackers

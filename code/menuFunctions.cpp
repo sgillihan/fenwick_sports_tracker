@@ -256,4 +256,28 @@ void printFenwickTreesMenu(map<string, AthleteTracker*>& athletes) {
     }
 }
 
+void viewSummaryByRange(map<string, AthleteTracker*>& athletes) {
+    if (athletes.empty()) {
+        cout << "No athlete data available." << endl;
+        return;
+    }
+
+    string startStr, endStr;
+    cout << "Enter start date (MM/DD/YYYY): ";
+    cin >> startStr;
+    cout << "Enter end date (MM/DD/YYYY): ";
+    cin >> endStr;
+
+    tm start = CSVProc::parseDate(startStr);
+    tm end = CSVProc::parseDate(endStr);
+
+    for (const auto& [name, tracker] : athletes) {
+        cout << "Athlete: " << name << endl;
+        cout << "  Distance (in range): " << tracker->distanceInRange(start, end) << " miles" << endl;
+        cout << "  Time (in range): " << tracker->timeInRange(start, end) << " minutes" << endl;
+        cout << "  Average Pace (in range): " << tracker->paceInRange(start, end) << " min/mile" << endl;
+        cout << endl;
+    }
+}
+
 

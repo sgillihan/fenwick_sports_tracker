@@ -13,5 +13,6 @@ void removeActivityMenu(map<string, AthleteTracker*>& athletes);
 void addActivityMenu(map<string, AthleteTracker*>& athletes);
 void editActivityMenu(map<string, AthleteTracker*>& athletes);
 void printFenwickTreesMenu(map<string, AthleteTracker*>& athletes);
+void viewSummaryByRange(map<string, AthleteTracker*>& athletes);
 
 #endif
