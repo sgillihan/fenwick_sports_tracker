@@ -6,6 +6,11 @@
 
 using namespace std;
 
+// The activity structure supports the format the data
+// will be imported in: Name, Date, Distance, and Time.
+// Additionally, an id will be assigned to each activity
+// instance. 
+
 struct Activity {
   int id;
   string name;

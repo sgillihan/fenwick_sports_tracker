@@ -11,7 +11,7 @@ AthleteTracker::AthleteTracker(const string& name, int capacity)
 }
 
 AthleteTracker::~AthleteTracker() {
-    // nothing to delete manually
+    // no action needed
 }
 
 string AthleteTracker::formatDate(const tm& date) const {
@@ -29,91 +29,53 @@ int AthleteTracker::addActivity(const tm& date, double distance, double time) {
     a.distance = distance;
     a.time = time;
 
-    //add new activity to private member activitis vector
+    //add new activity to private member activities vector
     activities.push_back(a);
-
-    //assign the next available index to the activity and map these values for future reference
-    int index = nextIndex++;
-    idToIndexMap[a.id] = index;
-    indexToIdMap[index] = a.id;
-    string dateStr = formatDate(date);
-
-    //check if date is already in vector, if not create new vector
-    if (dateToIndices.find(dateStr)==dateToIndices.end()){
-        dateToIndices[dateStr] = vector<int>();
-    }
-
-    //add new activity index to list for appropriate date
-    dateToIndices[dateStr].push_back(index);
-
-    //update Time and Distance Fenwick trees
-    distanceTree.update(index, distance);
-    timeTree.update(index, time);
+    rebuildTrees();
 
     return a.id;
 }
 
 void AthleteTracker::removeActivity(int activityId) {
-    //first check if the activity ID provided exists in the tree. Return early if DNE.
-    if (idToIndexMap.find(activityId) == idToIndexMap.end()) return;
-
-    //find Fenwick tree index for provided activity ID
-    int index = idToIndexMap[activityId];
-
-    //find the Activity object and essentially deactivate it
-    //the time and distance for the deactivated activity are subtracted from Fenwick totals
-    for (auto& a : activities) {
-        if (a.id == activityId) {
-            distanceTree.update(index, -a.distance);
-            timeTree.update(index, -a.time);
-            break;
-        }
-    }
-
-    //the activity is still present in activities vector to maintain Fenwick indexing
-    //but the mappings are removed to complete deactivation of the activity
-    idToIndexMap.erase(activityId);
-    indexToIdMap.erase(index);
+    activities.erase(std::remove_if(activities.begin(), activities.end(), [&](const Activity& a) {
+        return a.id == activityId;
+    }), activities.end());
+    rebuildTrees();
 }
 
 void AthleteTracker::updateActivity(int activityId, double newDistance, double newTime) {
-    //first check if the activity ID provided exists in the tree. Return early if DNE.
-    if (idToIndexMap.find(activityId) == idToIndexMap.end()) return;
-    
-    //find Fenwick tree index for provided activity ID
-    int index = idToIndexMap[activityId];
-
-    //find the Activity object and update with new values
-    //the delta must be calculated, because it's the delta that is added or subtracted from the fenwick tree
     for (auto& a : activities) {
         if (a.id == activityId) {
-            //calc deltas
-            double deltaDist = newDistance - a.distance;
-            double deltaTime = newTime - a.time;
-
-            //update activity vector values
             a.distance = newDistance;
             a.time = newTime;
-
-            //update fenwick trees
-            distanceTree.update(index, deltaDist);
-            timeTree.update(index, deltaTime);
             break;
         }
     }
+    rebuildTrees();
+}
+
+int AthleteTracker::getNextActivityId() {
+    return nextActivityId++;
+}
+
+void AthleteTracker::appendActivityWithoutRebuild(const Activity& a) {
+    activities.push_back(a);
 }
 
 double AthleteTracker::totalDistance() const {
+    //query fenwick tree on last occupied index
     return distanceTree.query(distanceTree.getSize() - 1);
 }
 
 double AthleteTracker::totalTime() const {
+    //query fenwick tree on last occupied index
     return timeTree.query(timeTree.getSize() - 1);
 }
 
 double AthleteTracker::averagePace() const {
     double t = totalTime();
     double d = totalDistance();
+    //calculate pace in minutes per mile
     return (d > 0.0) ? t / d : 0.0;
 }
 
@@ -150,6 +112,7 @@ double AthleteTracker::timeInRange(const tm& start, const tm& end) const {
 double AthleteTracker::paceInRange(const tm& start, const tm& end) const {
     double t = timeInRange(start, end);
     double d = distanceInRange(start, end);
+    //calculate pace in minutes per mile
     return (d > 0.0) ? t / d : 0.0;
 }
 
@@ -169,7 +132,7 @@ tm AthleteTracker::getOldestDate() const {
     tm oldest = activities[0].date;
 
     for (const auto& activity : activities) {
-        // Compare years first
+        // Compare years first using mktime for efficiency
         if (mktime(const_cast<tm*>(&activity.date)) < mktime(&oldest)) {
             oldest = activity.date;
         }
@@ -185,6 +148,7 @@ tm AthleteTracker::getNewestDate() const {
     tm newest = activities[0].date;
 
     for (const auto& activity : activities) {
+        // Compare years first using mktime for efficiency
         if (mktime(const_cast<tm*>(&activity.date)) > mktime(&newest)) {
             newest = activity.date;
         }
@@ -218,5 +182,29 @@ vector<double> AthleteTracker::getRawTimes() const {
         rawTimes[index] = activity.time;
     }
     return rawTimes;
+}
+
+void AthleteTracker::rebuildTrees() {
+    // Sort all activities by date
+    std::sort(activities.begin(), activities.end(), [](const Activity& a, const Activity& b) {
+        return mktime(const_cast<std::tm*>(&a.date)) < mktime(const_cast<std::tm*>(&b.date));
+    });
+
+    // Reset fenwick trees
+    distanceTree = FenwickTree(activities.size(), athleteName + " Distance");
+    timeTree = FenwickTree(activities.size(), athleteName + " Time");
+    idToIndexMap.clear();
+    dateToIndices.clear();
+
+    // Reassign tree indices and update trees
+    for (int i = 0; i < activities.size(); ++i) {
+        const Activity& a = activities[i];
+        idToIndexMap[a.id] = i;
+        dateToIndices[formatDate(a.date)].push_back(i);
+        distanceTree.update(i, a.distance);
+        timeTree.update(i, a.time);
+    }
+
+    nextIndex = activities.size();
 }
 

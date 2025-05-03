@@ -10,23 +10,25 @@ FenwickTree::FenwickTree(int n, const string& treeName) : size(n), name(treeName
 }
 
 FenwickTree::~FenwickTree(){
-
+// no action needed
 }
 
 const string& FenwickTree::getName() const {
   return name;
 }
 
-//updates the index and all affected parent indices
+//updates the index and all affected parent indices using bit operations
 void FenwickTree::update(int index, double delta) {
-    for (++index; index <= size; index += index & -index)
+    for (++index; index <= size; index += index & -index) {
         tree[index] += delta;
+    }
 }
 
 double FenwickTree::query(int index) const {
     double sum = 0.0;
-    for (++index; index > 0; index -= index & -index)
+    for (++index; index > 0; index -= index & -index) {
         sum += tree[index];
+    }
     return sum;
 }
 
@@ -50,7 +52,7 @@ void FenwickTree::printFenwickDetails(const vector<double>& rawData) const {
 
     for (int i = 0; i < size; ++i) {
         double distance = (i < rawData.size()) ? rawData[i] : 0.0;
-        double rawStored = tree[i+1]; // remember: tree is 1-indexed
+        double rawStored = tree[i+1]; 
         double cumulative = query(i);
 
         cout << left

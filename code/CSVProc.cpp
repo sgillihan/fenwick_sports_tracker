@@ -25,6 +25,8 @@ void CSVProc::importCSV(const string& filename, map<string,AthleteTracker*>& ath
     string line;
     getline(file, line); //skip header
 
+    map<string,vector<Activity>> tempActivities;
+
     while (getline(file, line)) {
         istringstream ss(line);
         string name, dateStr, distStr, timeStr;
@@ -38,12 +40,27 @@ void CSVProc::importCSV(const string& filename, map<string,AthleteTracker*>& ath
         double distance = stod(distStr);
         double time = stod(timeStr);
 
-        if (athletes.find(name)== athletes.end()) {
-            athletes[name] = new AthleteTracker(name,treeCapacity);
-        }
+        Activity a;
+        a.name = name;
+        a.date = date;
+        a.distance = distance;
 
-        athletes[name]->addActivity(date,distance,time);
+        tempActivities[name].push_back(a);
+
     }
     file.close();
+
+    for (auto& [name, acts] : tempActivities) {
+        if (athletes.find(name)== athletes.end()) {
+            athletes[name]= new AthleteTracker(name, treeCapacity);
+        }
+
+        for (auto& a : acts) {
+            a.id = athletes[name]->getNextActivityId();
+            athletes[name]->appendActivityWithoutRebuild(a);
+        }
+
+        athletes[name]->rebuildTrees();
+    }
 
 }

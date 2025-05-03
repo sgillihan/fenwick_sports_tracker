@@ -33,6 +33,8 @@ public:
     int addActivity(const tm& date, double distance, double time);
     void removeActivity(int activityId); 
     void updateActivity(int activityId, double newDistance, double newTime);
+    int getNextActivityId();
+    void appendActivityWithoutRebuild(const Activity& a);
     
     double totalDistance() const;
     double totalTime() const;
@@ -51,6 +53,7 @@ public:
     string formatDate(const tm& date) const;
 
     void printFenwickTrees() const;
+    void rebuildTrees();
 
     vector<double> getRawDistances() const;
     vector<double> getRawTimes() const;
