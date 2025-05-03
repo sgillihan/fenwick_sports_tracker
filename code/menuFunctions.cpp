@@ -247,13 +247,41 @@ void printFenwickTreesMenu(map<string, AthleteTracker*>& athletes) {
     if (athletes.empty()) {
         cout << "No athlete data available yet." << endl << endl;
     }
-    else {
+
+    int choice;
+    cout<<"Do you want to:"<<endl;
+    cout<<"1. Print Fenwick Trees for all athletes"<<endl;
+    cout<<"2. Print Fenwick Trees for a single athlete"<<endl<<endl;
+    cin>>choice;
+
+    if (choice==1){
         for (const auto& [name, tracker] : athletes) {
-            cout << "Athlete: " << name << endl;
-            tracker->printFenwickTrees();  // AthleteTracker handles printing its own trees
-            cout << endl;
+            cout << "Athlete: " <<name<<endl;
+            tracker->printFenwickTrees();
+            cout<<endl<<endl;
         }
     }
+    else if (choice==2){
+        string name;
+        cout<<"Enter athlete name: ";
+        cin>>name;
+
+        auto it=athletes.find(name);
+        if (it != athletes.end()){
+            cout<<"Athlete: "<<name<<endl;
+            it->second->printFenwickTrees();
+
+        }
+
+        else{
+            cout<<"Athlete not found"<<endl;
+        }
+    }
+
+    else {
+        cout<<"Invalid choice. Enter 1 or 2."<<endl;
+    }
+
 }
 
 void viewSummaryByRange(map<string, AthleteTracker*>& athletes) {

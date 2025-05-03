@@ -10,9 +10,9 @@ AthleteTracker::AthleteTracker(const string& name, int capacity)
     : athleteName(name), distanceTree(capacity, name + " Distance"), timeTree(capacity, name + " Time"), nextIndex(0), nextActivityId(0) {
 }
 
-AthleteTracker::~AthleteTracker() {
-    // no action needed
-}
+//AthleteTracker::~AthleteTracker() {
+//    // no action needed
+//}
 
 string AthleteTracker::formatDate(const tm& date) const {
     char buffer[11];

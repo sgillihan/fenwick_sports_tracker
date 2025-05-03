@@ -9,9 +9,9 @@ FenwickTree::FenwickTree(int n, const string& treeName) : size(n), name(treeName
     tree.resize(n + 1, 0.0);
 }
 
-FenwickTree::~FenwickTree(){
+//FenwickTree::~FenwickTree(){
 // no action needed
-}
+//}
 
 const string& FenwickTree::getName() const {
   return name;
