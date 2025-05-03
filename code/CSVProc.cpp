@@ -44,6 +44,7 @@ void CSVProc::importCSV(const string& filename, map<string,AthleteTracker*>& ath
         a.name = name;
         a.date = date;
         a.distance = distance;
+        a.time = time;
 
         tempActivities[name].push_back(a);
 
