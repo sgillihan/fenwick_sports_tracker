@@ -1,7 +1,5 @@
 # Sports Performance Using Fenwick Trees (Final Project)
-University of Colorado - Boulder
-CSPB 2270 Spring 2025
-Stephanie Gillihan
+University of Colorado - Boulder / CSPB 2270 Spring 2025 / Stephanie Gillihan
 
 ## Fenwick Tree Background 
 
