@@ -33,7 +33,7 @@ For my CSPB 2270 final project, I plan to use a Fenwick Tree to implement a spor
   *	Total miles from mm/dd/yyyy to mm/dd/yyyy for Athlete A
   *	Total time from mm/dd/yyyy to mm/dd/yyyy for Athlete A
   *	Average pace from mm/dd/yyyy to mm/dd/yyyy for Athlete A
-  *	Given time period mm/dd/yyyy to mm/dd/yyyy, provide mileage leader, time leader, and average pace leader out of existing athletes
+  *	Given time period mm/dd/yyyy to mm/dd/yyyy, provide mileage total, time total, and average pace for existing athletes
 
 ## Compiling and Running
 
