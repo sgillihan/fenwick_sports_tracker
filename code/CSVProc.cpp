@@ -25,6 +25,7 @@ void CSVProc::importCSV(const string& filename, map<string,AthleteTracker*>& ath
     string line;
     getline(file, line); //skip header
 
+    // Group activities by name so they can be appended in bulk, and Fenwick tree is built once
     map<string,vector<Activity>> tempActivities;
 
     while (getline(file, line)) {
@@ -36,6 +37,7 @@ void CSVProc::importCSV(const string& filename, map<string,AthleteTracker*>& ath
         if (!getline(ss,distStr,',')) continue;
         if (!getline(ss,timeStr,',')) continue;
 
+        // stod is a standard library feature that converts a string to a double
         tm date = parseDate(dateStr);
         double distance = stod(distStr);
         double time = stod(timeStr);

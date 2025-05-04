@@ -185,7 +185,7 @@ vector<double> AthleteTracker::getRawTimes() const {
 }
 
 void AthleteTracker::rebuildTrees() {
-    // Sort all activities by date
+    // Sort all activities chronologically by date
     std::sort(activities.begin(), activities.end(), [](const Activity& a, const Activity& b) {
         return mktime(const_cast<std::tm*>(&a.date)) < mktime(const_cast<std::tm*>(&b.date));
     });

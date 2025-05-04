@@ -17,7 +17,9 @@ const string& FenwickTree::getName() const {
   return name;
 }
 
-//updates the index and all affected parent indices using bit operations
+//updates the index and all affected parent indices using bit operations and 1 based indexing
+// index += index & -index isolated the least significant bit that is equal to 1 and adds it to the index
+// this is what enables the Fenwick Tree to jump to parent indices
 void FenwickTree::update(int index, double delta) {
     for (++index; index <= size; index += index & -index) {
         tree[index] += delta;
