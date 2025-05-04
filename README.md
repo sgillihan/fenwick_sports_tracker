@@ -45,9 +45,9 @@ Run the program from the terminal using command: ./bin/fenwick_tracker
 
 ## References
 
-Carpanese, Igor. "A Visual Introduction to Fenwick Tree." Medium, May 16, 2021, [Visual Intro to Fenwick Tree](medium.com/carpanese/a-visual-introduction-to-fenwick-tree-89b82cac5b3c).
+Carpanese, Igor. "A Visual Introduction to Fenwick Tree." Medium, May 16, 2021, [Visual Intro to Fenwick Tree](https://www.medium.com/carpanese/a-visual-introduction-to-fenwick-tree-89b82cac5b3c).
 
-"boba5551". "Binary Indexed Trees." TopCoder, October 31, 2018, [TopCoder Binary Indexed Trees](topcoder.com/thrive/articles/Binary%20Indexed%20Trees).
+"boba5551". "Binary Indexed Trees." TopCoder, October 31, 2018, [TopCoder Binary Indexed Trees](https://topcoder.com/thrive/articles/Binary%20Indexed%20Trees).
 
 ChatGPT-4o: for background information on Fenwick Trees, help with implementation and debugging, and help with visualizing the Fenwick Tree structure in action.
 
