@@ -1,6 +1,9 @@
 # Sports Performance Using Fenwick Trees (Final Project)
 University of Colorado - Boulder / CSPB 2270 Spring 2025 / Stephanie Gillihan
 
+## Project Walkthrough Video
+[SGillihan_Fenwick_Tree](https://drive.google.com/file/d/1KB5_pWhyBXhxsgTlt1DKvHOUb0DmxuOn/view?usp=sharing)
+
 ## Fenwick Tree Background 
 
 Fenwick Trees, also known as Binary Indexed Trees, were named after Peter Fenwick when he introduced the concept in 1994. Fenwick Trees are highly efficient for tasks such as calculating cumulative sums over a range and dynamically updating values for specific data points. 
@@ -49,7 +52,7 @@ Carpanese, Igor. "A Visual Introduction to Fenwick Tree." Medium, May 16, 2021, 
 
 ChatGPT-4o: for background information on Fenwick Trees, help with implementation and debugging, and help with visualizing the Fenwick Tree structure in action.
 
-## Ideas for expasion
+## Ideas for Expansion
 * Add structures for other activities with appropriate units (cycling, swimming)
 * Add graphs in some kind of dashboard
 * Connect to a real data source, such as the Garmin app
